@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Download MamaSphere</title>
+<script>
+  // Auto-detect platform and redirect to store
+  const ua = navigator.userAgent.toLowerCase();
+  if (/iphone|ipad|ipod/.test(ua)) {
+    window.location.href = 'https://apps.apple.com/app/mamasphere/id_YOUR_APP_ID';
+  } else if (/android/.test(ua)) {
+    window.location.href = 'https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere';
+  }
+</script>
+<style>
+  body { font-family: -apple-system, sans-serif; text-align: center; padding: 60px 20px; color: #0A2540; }
+  h1 { color: #4A2272; }
+  .btn { display: inline-block; margin: 10px; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 16px; }
+  .ios { background: #000; color: #fff; }
+  .android { background: #4A8B7F; color: #fff; }
+</style>
+</head>
+<body>
+<h1>MamaSphere</h1>
+<p>Your AI Maternal Health Companion</p>
+<br>
+<a class="btn ios" href="https://apps.apple.com/app/mamasphere/id_YOUR_APP_ID">Download on App Store</a>
+<a class="btn android" href="https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere">Get on Google Play</a>
+<br><br>
+<p style="color:#666;font-size:14px;">TTC • Pregnancy • Postpartum</p>
+</body>
+</html>
