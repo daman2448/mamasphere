@@ -3,31 +3,173 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Download MamaSphere</title>
+<title>Download MamaSphere — Maternal Health Companion</title>
+<meta name="description" content="Your AI companion through trying to conceive, pregnancy, and postpartum care. Available on iOS and Android.">
+<meta property="og:title" content="MamaSphere — Maternal Health Companion">
+<meta property="og:description" content="AI-powered tracking, insights, and community for every stage of motherhood.">
+<meta property="og:image" content="https://daman2448.github.io/mamasphere-policy/icon.png">
+<meta property="og:type" content="website">
+
 <script>
-  // Auto-detect platform and redirect to store
-  const ua = navigator.userAgent.toLowerCase();
-  if (/iphone|ipad|ipod/.test(ua)) {
-    window.location.href = 'https://apps.apple.com/app/mamasphere/id_YOUR_APP_ID';
-  } else if (/android/.test(ua)) {
-    window.location.href = 'https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere';
-  }
+  // Auto-redirect mobile users to their native store
+  (function () {
+    var ua = navigator.userAgent.toLowerCase();
+    var IOS_URL = 'https://apps.apple.com/us/app/mamasphere-maternal-health/id6761536832';
+    var ANDROID_URL = 'https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere';
+    if (/iphone|ipad|ipod/.test(ua)) {
+      window.location.replace(IOS_URL);
+    } else if (/android/.test(ua)) {
+      window.location.replace(ANDROID_URL);
+    }
+  })();
 </script>
+
 <style>
-  body { font-family: -apple-system, sans-serif; text-align: center; padding: 60px 20px; color: #0A2540; }
-  h1 { color: #4A2272; }
-  .btn { display: inline-block; margin: 10px; padding: 14px 28px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 16px; }
-  .ios { background: #000; color: #fff; }
-  .android { background: #4A8B7F; color: #fff; }
+  :root {
+    --purple: #4A2272;
+    --sage: #00B894;
+    --terracotta: #F2725C;
+    --navy: #0A2540;
+    --bg: #F7F4FB;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 60px 24px;
+    color: var(--navy);
+    text-align: center;
+    background: linear-gradient(160deg, #F7F4FB 0%, #FDE9E0 100%);
+    min-height: 100vh;
+  }
+  .logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 22px;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 30px rgba(74, 34, 114, 0.18);
+  }
+  h1 {
+    color: var(--purple);
+    font-size: 36px;
+    margin: 0 0 8px;
+    letter-spacing: -0.5px;
+  }
+  .tag {
+    font-size: 16px;
+    color: #555;
+    margin: 0 0 32px;
+  }
+  .journeys {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(74, 34, 114, 0.08);
+    border-radius: 20px;
+    color: var(--purple);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 36px;
+  }
+  .stores {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin: 0 0 32px;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 24px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    min-width: 220px;
+    justify-content: center;
+    box-shadow: 0 6px 16px rgba(10, 37, 64, 0.15);
+    transition: transform 0.15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn.ios { background: #000; color: #fff; }
+  .btn.android { background: #00B894; color: #fff; }
+  .btn svg { width: 22px; height: 22px; }
+  .features {
+    max-width: 520px;
+    margin: 40px auto 0;
+    text-align: left;
+    padding: 0 16px;
+  }
+  .features h2 {
+    color: var(--purple);
+    font-size: 18px;
+    margin: 24px 0 12px;
+    text-align: center;
+  }
+  .features ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .features li {
+    padding: 10px 0 10px 30px;
+    position: relative;
+    font-size: 15px;
+    color: #333;
+  }
+  .features li::before {
+    content: '✓';
+    position: absolute;
+    left: 4px;
+    color: var(--sage);
+    font-weight: 700;
+  }
+  footer {
+    margin-top: 48px;
+    font-size: 13px;
+    color: #888;
+  }
+  footer a { color: #666; margin: 0 8px; }
 </style>
 </head>
 <body>
+
+<img src="icon.png" alt="MamaSphere" class="logo"
+     onerror="this.style.display='none'">
 <h1>MamaSphere</h1>
-<p>Your AI Maternal Health Companion</p>
-<br>
-<a class="btn ios" href="https://apps.apple.com/app/mamasphere/id_YOUR_APP_ID">Download on App Store</a>
-<a class="btn android" href="https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere">Get on Google Play</a>
-<br><br>
-<p style="color:#666;font-size:14px;">TTC • Pregnancy • Postpartum</p>
+<p class="tag">Your AI Maternal Health Companion</p>
+<div class="journeys">TTC · Pregnancy · Postpartum</div>
+
+<div class="stores">
+  <a class="btn ios"
+     href="https://apps.apple.com/us/app/mamasphere-maternal-health/id6761536832">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.02-2.32 1.9-3.43 1.98-3.49-1.08-1.58-2.77-1.79-3.36-1.82-1.43-.14-2.8.84-3.52.84-.74 0-1.84-.82-3.03-.8-1.55.02-3 .91-3.81 2.3-1.63 2.83-.42 7.02 1.17 9.32.78 1.12 1.71 2.38 2.92 2.34 1.17-.05 1.62-.76 3.04-.76 1.41 0 1.82.76 3.06.74 1.26-.02 2.06-1.14 2.83-2.27.89-1.3 1.26-2.57 1.28-2.63-.03-.01-2.46-.94-2.48-3.73zM14.73 5.23c.64-.77 1.07-1.85.95-2.92-.92.04-2.04.61-2.71 1.38-.59.68-1.12 1.76-.98 2.82 1.03.08 2.09-.52 2.74-1.28z"/></svg>
+    Download on App Store
+  </a>
+  <a class="btn android"
+     href="https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere">
+    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.609 22.186a.996.996 0 0 1-.609-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.707 2.707-10.15 5.878 7.443-8.585zm3.693-3.692l2.31 1.338a1 1 0 0 1 0 1.73l-2.31 1.338-3.277-3.27 3.277-3.136zM6.056 1.215l10.15 5.871-2.708 2.708L6.056 1.215z"/></svg>
+    Get on Google Play
+  </a>
+</div>
+
+<div class="features">
+  <h2>Why MamaSphere</h2>
+  <ul>
+    <li>AI health assistant with source citations</li>
+    <li>Medical report scanner — get plain-language summaries</li>
+    <li>Community matched to your journey &amp; conditions</li>
+    <li>Works in 7 Indian languages</li>
+    <li>Jaundice screener, growth charts, vaccination reminders</li>
+    <li>Privacy-first: your data is encrypted and never sold</li>
+  </ul>
+</div>
+
+<footer>
+  <a href="privacy.html">Privacy Policy</a> ·
+  <a href="support.html">Terms &amp; Support</a> ·
+  <a href="mailto:findaneasyway@gmail.com">Contact</a>
+</footer>
 </body>
 </html>
