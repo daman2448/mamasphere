@@ -3,97 +3,592 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MamaSphere - Your AI Maternal Health Companion</title>
+<title>MamaSphere — Your AI Maternal Health Companion</title>
+<meta name="description" content="AI-powered maternal health app for trying to conceive, pregnancy, and postpartum. Track vitals, scan reports, chat with AI assistant, and join supportive communities — in 7 Indian languages.">
+<meta name="theme-color" content="#4A2272">
+
+<!-- Open Graph / Social -->
+<meta property="og:title" content="MamaSphere — AI Maternal Health Companion">
+<meta property="og:description" content="Track, learn, and connect through every stage of motherhood.">
+<meta property="og:image" content="https://daman2448.github.io/mamasphere-policy/icon.png">
+<meta property="og:url" content="https://daman2448.github.io/mamasphere-policy/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" type="image/png" href="icon.png">
+
 <style>
+  :root {
+    --purple: #4A2272;
+    --purple-light: #7B4FA8;
+    --sage: #00B894;
+    --sage-light: #55E6C1;
+    --terracotta: #F2725C;
+    --pink: #F06292;
+    --navy: #0A2540;
+    --bg: #FAF7FC;
+    --card: #FFFFFF;
+    --text: #1F2937;
+    --muted: #6B7280;
+    --border: #E5E7EB;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0A2540; }
-  .hero { background: linear-gradient(135deg, #4A8B7F, #2D5E54); color: white; padding: 80px 20px; text-align: center; }
-  .hero h1 { font-size: 48px; font-weight: 800; margin-bottom: 16px; }
-  .hero p { font-size: 20px; opacity: 0.9; max-width: 600px; margin: 0 auto 30px; }
-  .hero .badge { display: inline-block; margin: 8px; }
-  .hero .badge img { height: 50px; }
-  .features { max-width: 900px; margin: 0 auto; padding: 60px 20px; }
-  .features h2 { text-align: center; font-size: 32px; color: #4A2272; margin-bottom: 40px; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
-  .card { background: #f8f9fa; border-radius: 16px; padding: 24px; }
-  .card h3 { color: #4A8B7F; margin-bottom: 8px; font-size: 18px; }
-  .card p { color: #666; font-size: 15px; line-height: 1.5; }
-  .card .icon { font-size: 32px; margin-bottom: 12px; }
-  .cta { background: #4A2272; color: white; text-align: center; padding: 60px 20px; }
-  .cta h2 { font-size: 32px; margin-bottom: 12px; }
-  .cta p { opacity: 0.8; margin-bottom: 24px; }
-  .cta a { display: inline-block; background: #FFB74D; color: #4A2272; padding: 14px 32px; border-radius: 12px; text-decoration: none; font-weight: 700; font-size: 18px; }
-  footer { text-align: center; padding: 30px; color: #666; font-size: 14px; }
-  footer a { color: #4A8B7F; text-decoration: none; margin: 0 12px; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    color: var(--text);
+    line-height: 1.6;
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+  /* ─── Navbar ─── */
+  nav {
+    position: sticky;
+    top: 0;
+    background: rgba(250, 247, 252, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 12px 0;
+  }
+  nav .container { display: flex; align-items: center; justify-content: space-between; }
+  nav .brand { display: flex; align-items: center; gap: 10px; }
+  nav .brand img { width: 36px; height: 36px; border-radius: 8px; }
+  nav .brand span { font-weight: 800; font-size: 18px; color: var(--purple); }
+  nav .links { display: flex; gap: 24px; align-items: center; }
+  nav .links a { color: var(--navy); text-decoration: none; font-size: 14px; font-weight: 500; }
+  nav .links a:hover { color: var(--purple); }
+  nav .cta-nav {
+    background: var(--purple);
+    color: #fff !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+  }
+  @media (max-width: 700px) { nav .links a:not(.cta-nav) { display: none; } }
+
+  /* ─── Hero ─── */
+  .hero {
+    padding: 60px 0 80px;
+    background: linear-gradient(160deg, #FAF7FC 0%, #FDE9E0 100%);
+    overflow: hidden;
+  }
+  .hero .grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+  @media (max-width: 900px) { .hero .grid { grid-template-columns: 1fr; text-align: center; } }
+
+  .hero .pill {
+    display: inline-block;
+    padding: 6px 14px;
+    background: rgba(74, 34, 114, 0.1);
+    border-radius: 20px;
+    color: var(--purple);
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--navy);
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+  .hero h1 em {
+    color: var(--purple);
+    font-style: normal;
+    background: linear-gradient(90deg, var(--purple) 0%, var(--pink) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .hero .sub { font-size: 18px; color: var(--muted); margin-bottom: 32px; max-width: 480px; }
+  @media (max-width: 900px) { .hero .sub { margin-left: auto; margin-right: auto; } }
+  @media (max-width: 600px) { .hero h1 { font-size: 36px; } }
+
+  .store-btns { display: flex; flex-wrap: wrap; gap: 12px; }
+  @media (max-width: 900px) { .store-btns { justify-content: center; } }
+  .store-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 22px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 15px;
+    box-shadow: 0 6px 16px rgba(10, 37, 64, 0.15);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .store-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(10, 37, 64, 0.2); }
+  .store-btn.ios { background: #000; color: #fff; }
+  .store-btn.android { background: var(--sage); color: #fff; }
+  .store-btn svg { width: 22px; height: 22px; }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+  }
+  .phone {
+    width: 240px;
+    border-radius: 32px;
+    box-shadow: 0 30px 60px rgba(74, 34, 114, 0.25);
+    transform: rotate(-2deg);
+    border: 4px solid #111;
+  }
+  .phone.back {
+    width: 200px;
+    transform: rotate(4deg) translateX(-20px) translateY(20px);
+    opacity: 0.85;
+  }
+  @media (max-width: 900px) {
+    .phone { width: 220px; }
+    .phone.back { display: none; }
+  }
+
+  /* ─── Sections ─── */
+  section { padding: 80px 0; }
+  section.alt { background: #fff; }
+  section h2 {
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--navy);
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: -0.5px;
+  }
+  section .lead {
+    font-size: 17px;
+    color: var(--muted);
+    text-align: center;
+    max-width: 620px;
+    margin: 0 auto 48px;
+  }
+  @media (max-width: 600px) { section h2 { font-size: 28px; } }
+
+  /* ─── Features grid ─── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .feature {
+    background: var(--card);
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .feature:hover { transform: translateY(-4px); box-shadow: 0 12px 24px rgba(10, 37, 64, 0.08); }
+  .feature .icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 18px;
+  }
+  .feature h3 { font-size: 18px; color: var(--navy); margin-bottom: 8px; font-weight: 700; }
+  .feature p { color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+  .ic-ai { background: linear-gradient(135deg, #E9D5FF, #C4B5FD); }
+  .ic-track { background: linear-gradient(135deg, #FEE2E2, #FECACA); }
+  .ic-community { background: linear-gradient(135deg, #DBEAFE, #BFDBFE); }
+  .ic-growth { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); }
+  .ic-nicu { background: linear-gradient(135deg, #FED7AA, #FDBA74); }
+  .ic-reports { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
+  .ic-reminders { background: linear-gradient(135deg, #FEF3C7, #FDE68A); }
+  .ic-baby { background: linear-gradient(135deg, #CFFAFE, #A5F3FC); }
+  .ic-jaundice { background: linear-gradient(135deg, #FEF9C3, #FDE047); }
+  .ic-privacy { background: linear-gradient(135deg, #E0E7FF, #C7D2FE); }
+  .ic-langs { background: linear-gradient(135deg, #F5D0FE, #E9D5FF); }
+  .ic-emergency { background: linear-gradient(135deg, #FECDD3, #FDA4AF); }
+
+  /* ─── Showcase (screenshots) ─── */
+  .showcase { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; align-items: start; }
+  @media (max-width: 900px) { .showcase { grid-template-columns: 1fr; } }
+  .shot {
+    background: var(--card);
+    border-radius: 20px;
+    padding: 28px;
+    border: 1px solid var(--border);
+    text-align: center;
+  }
+  .shot img {
+    width: 100%;
+    max-width: 240px;
+    border-radius: 22px;
+    box-shadow: 0 14px 32px rgba(74, 34, 114, 0.2);
+    border: 3px solid #111;
+    margin-bottom: 20px;
+  }
+  .shot h4 { color: var(--purple); font-size: 18px; margin-bottom: 8px; font-weight: 700; }
+  .shot p { color: var(--muted); font-size: 14px; }
+
+  /* ─── Languages ─── */
+  .langs-bar {
+    background: linear-gradient(135deg, var(--purple), var(--purple-light));
+    color: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    text-align: center;
+  }
+  .langs-bar h3 { font-size: 24px; margin-bottom: 8px; font-weight: 800; }
+  .langs-bar p { opacity: 0.9; margin-bottom: 20px; }
+  .lang-chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .lang-chip {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  /* ─── Privacy/safety ─── */
+  .safety {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    text-align: center;
+  }
+  @media (max-width: 700px) { .safety { grid-template-columns: 1fr; } }
+  .safety .item .big-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: var(--sage);
+    color: #fff;
+    font-size: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .safety h3 { color: var(--navy); font-size: 18px; margin-bottom: 8px; }
+  .safety p { color: var(--muted); font-size: 14px; }
+
+  /* ─── FAQ ─── */
+  .faq details {
+    background: var(--card);
+    padding: 20px 24px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .faq summary {
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--navy);
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq summary::-webkit-details-marker { display: none; }
+  .faq summary::after { content: '+'; color: var(--purple); font-size: 24px; font-weight: 400; }
+  .faq details[open] summary::after { content: '−'; }
+  .faq p { margin-top: 12px; color: var(--muted); font-size: 15px; }
+
+  /* ─── CTA ─── */
+  .final-cta {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: #fff;
+    text-align: center;
+    padding: 80px 24px;
+    border-radius: 24px;
+    margin: 40px auto;
+    max-width: 900px;
+  }
+  .final-cta h2 { color: #fff; font-size: 36px; margin-bottom: 12px; }
+  .final-cta p { opacity: 0.95; margin-bottom: 28px; font-size: 17px; }
+  .final-cta .store-btns { justify-content: center; }
+  .final-cta .store-btn.android { background: #fff; color: var(--navy); }
+  .final-cta .store-btn.ios { background: rgba(0, 0, 0, 0.6); color: #fff; }
+
+  /* ─── Footer ─── */
+  footer {
+    background: var(--navy);
+    color: rgba(255, 255, 255, 0.75);
+    padding: 48px 0 28px;
+    text-align: center;
+    font-size: 14px;
+  }
+  footer a { color: rgba(255, 255, 255, 0.85); text-decoration: none; margin: 0 10px; }
+  footer a:hover { color: #fff; }
+  footer .brand-footer {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  footer .brand-footer img { width: 32px; height: 32px; border-radius: 8px; }
+  footer .brand-footer strong { font-size: 18px; color: #fff; }
+  footer .copyright { margin-top: 20px; opacity: 0.6; font-size: 13px; }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <h1>MamaSphere</h1>
-  <p>Your AI-powered companion through trying to conceive, pregnancy, and postpartum care.</p>
-</div>
-
-<div class="features">
-  <h2>Everything You Need, In One App</h2>
-  <div class="grid">
-    <div class="card">
-      <div class="icon">🤖</div>
-      <h3>AI Health Assistant</h3>
-      <p>Chat about symptoms, nutrition, sleep. Scan medical reports for instant AI analysis.</p>
+<!-- ═══ Navbar ═══ -->
+<nav>
+  <div class="container">
+    <div class="brand">
+      <img src="icon.png" alt="MamaSphere">
+      <span>MamaSphere</span>
     </div>
-    <div class="card">
-      <div class="icon">📊</div>
-      <h3>Complete Tracking</h3>
-      <p>Vitals, mood, nutrition, feeding, diapers, sleep, weight — everything in one place.</p>
-    </div>
-    <div class="card">
-      <div class="icon">👶</div>
-      <h3>WHO Growth Charts</h3>
-      <p>Track your baby's growth with WHO percentile charts. Corrected age for preemies.</p>
-    </div>
-    <div class="card">
-      <div class="icon">🏥</div>
-      <h3>NICU Support</h3>
-      <p>Dedicated dashboard for NICU and premature babies. You're not alone.</p>
-    </div>
-    <div class="card">
-      <div class="icon">👩‍👩‍👧</div>
-      <h3>AI-Matched Community</h3>
-      <p>Find mothers with similar conditions and journeys. Moderated for safety.</p>
-    </div>
-    <div class="card">
-      <div class="icon">📋</div>
-      <h3>Doctor Reports</h3>
-      <p>Generate comprehensive PDF health reports to share with your healthcare provider.</p>
-    </div>
-    <div class="card">
-      <div class="icon">💊</div>
-      <h3>Smart Reminders</h3>
-      <p>Medications, supplements, feeding, pumping, appointments — never miss a thing.</p>
-    </div>
-    <div class="card">
-      <div class="icon">🤰</div>
-      <h3>Pregnancy Tools</h3>
-      <p>Contraction timer, birth plan builder, kick counter, hospital bag checklist.</p>
+    <div class="links">
+      <a href="#features">Features</a>
+      <a href="#languages">Languages</a>
+      <a href="#privacy">Privacy</a>
+      <a href="#faq">FAQ</a>
+      <a href="#download" class="cta-nav">Download</a>
     </div>
   </div>
-</div>
+</nav>
 
-<div class="cta">
-  <h2>Your Journey Starts Here</h2>
-  <p>Download MamaSphere and give yourself the support you deserve.</p>
-  <a href="https://apps.apple.com/us/app/mamasphere-maternal-health/id6761536832">Download on App Store</a>
-  <a href="https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere" style="background:#00B894;color:#fff;margin-left:8px;">Get on Google Play</a>
-</div>
+<!-- ═══ Hero ═══ -->
+<section class="hero" style="padding-top: 40px;">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <div class="pill">🌸 TTC · Pregnancy · Postpartum</div>
+        <h1>Your AI companion through <em>every stage of motherhood</em>.</h1>
+        <p class="sub">Track health, scan medical reports, chat with an AI health assistant, and join supportive communities — in 7 Indian languages. Built with mothers, for mothers.</p>
+        <div class="store-btns" id="download-top">
+          <a class="store-btn ios" href="https://apps.apple.com/us/app/mamasphere-maternal-health/id6761536832">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.02-2.32 1.9-3.43 1.98-3.49-1.08-1.58-2.77-1.79-3.36-1.82-1.43-.14-2.8.84-3.52.84-.74 0-1.84-.82-3.03-.8-1.55.02-3 .91-3.81 2.3-1.63 2.83-.42 7.02 1.17 9.32.78 1.12 1.71 2.38 2.92 2.34 1.17-.05 1.62-.76 3.04-.76 1.41 0 1.82.76 3.06.74 1.26-.02 2.06-1.14 2.83-2.27.89-1.3 1.26-2.57 1.28-2.63-.03-.01-2.46-.94-2.48-3.73zM14.73 5.23c.64-.77 1.07-1.85.95-2.92-.92.04-2.04.61-2.71 1.38-.59.68-1.12 1.76-.98 2.82 1.03.08 2.09-.52 2.74-1.28z"/></svg>
+            App Store
+          </a>
+          <a class="store-btn android" href="https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.609 22.186a.996.996 0 0 1-.609-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.707 2.707-10.15 5.878 7.443-8.585zm3.693-3.692l2.31 1.338a1 1 0 0 1 0 1.73l-2.31 1.338-3.277-3.27 3.277-3.136zM6.056 1.215l10.15 5.871-2.708 2.708L6.056 1.215z"/></svg>
+            Google Play
+          </a>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="screenshot-future-baby.png" alt="Future Baby feature" class="phone back">
+        <img src="screenshot-languages.png" alt="7 Indian Languages" class="phone">
+      </div>
+    </div>
+  </div>
+</section>
 
+<!-- ═══ Features ═══ -->
+<section id="features" class="alt">
+  <div class="container">
+    <h2>Everything you need, in one app</h2>
+    <p class="lead">From pre-conception tracking to postpartum care, MamaSphere grows with you through every milestone.</p>
+    <div class="features-grid">
+      <div class="feature">
+        <div class="icon ic-ai">🤖</div>
+        <h3>AI Health Assistant</h3>
+        <p>Chat about symptoms, nutrition, and sleep. Every answer cites authoritative sources like ACOG, WHO, and AAP.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-reports">📄</div>
+        <h3>Medical Report Scanner</h3>
+        <p>Upload any blood test, ultrasound, or scan. Get a plain-language summary, flagged findings, and next steps.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-track">📊</div>
+        <h3>Complete Tracking</h3>
+        <p>Vitals, mood, nutrition, feeding, diapers, sleep, weight — everything in one place with smart reminders.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-growth">📈</div>
+        <h3>WHO Growth Charts</h3>
+        <p>Track your baby's weight, length, and head circumference. Corrected age for preemies, percentile plotting.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-nicu">🏥</div>
+        <h3>NICU &amp; Preemie Support</h3>
+        <p>Dedicated dashboard for phototherapy, bilirubin tracking, pumping logs, and milestones. You're not alone.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-jaundice">☀️</div>
+        <h3>Jaundice Screener</h3>
+        <p>Take a photo of your newborn — our AI checks for visual signs of yellowing and tells you when to get tested.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-community">👩‍👩‍👧</div>
+        <h3>AI-Matched Community</h3>
+        <p>Join groups tailored to your journey and conditions. Moderated, anonymous, and safe. No judgment.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-reminders">🔔</div>
+        <h3>Smart Reminders</h3>
+        <p>Medications, supplements, feeding, pumping, appointments, vaccinations — never miss a thing.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-baby">👶</div>
+        <h3>Future Baby AI</h3>
+        <p>Upload photos of mom &amp; dad to see what your future baby might look like — or how your current baby may grow up.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-emergency">🚨</div>
+        <h3>Emergency Mode</h3>
+        <p>One-tap access to your saved doctor, emergency contact, and nearest hospital — even without unlocking the app.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-langs">🌐</div>
+        <h3>7 Indian Languages</h3>
+        <p>English, Hindi, Tamil, Telugu, Bengali, Marathi, Kannada — the AI responds in your language too.</p>
+      </div>
+      <div class="feature">
+        <div class="icon ic-privacy">🔒</div>
+        <h3>Privacy-First</h3>
+        <p>Your data is encrypted, never sold, never used to train AI models. Delete your account anytime.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Screenshot Showcase ═══ -->
+<section id="showcase">
+  <div class="container">
+    <h2>See it in action</h2>
+    <p class="lead">A few highlights from the app — there's a lot more inside.</p>
+    <div class="showcase">
+      <div class="shot">
+        <img src="screenshot-future-baby.png" alt="Future Baby screen">
+        <h4>Future Baby AI</h4>
+        <p>Combine parent photos and let AI predict your baby's features.</p>
+      </div>
+      <div class="shot">
+        <img src="screenshot-languages.png" alt="Language settings">
+        <h4>Choose Your Language</h4>
+        <p>Full app experience in 7 Indian languages. AI responds in your language too.</p>
+      </div>
+      <div class="shot">
+        <img src="screenshot-baby-result.png" alt="Baby result">
+        <h4>Share the Joy</h4>
+        <p>Detailed AI-generated description + shareable image for friends and family.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Languages ═══ -->
+<section id="languages" class="alt">
+  <div class="container">
+    <div class="langs-bar">
+      <h3>Built for India</h3>
+      <p>Full localization and AI responses in the language you think in.</p>
+      <div class="lang-chips">
+        <span class="lang-chip">English</span>
+        <span class="lang-chip">हिंदी · Hindi</span>
+        <span class="lang-chip">தமிழ் · Tamil</span>
+        <span class="lang-chip">తెలుగు · Telugu</span>
+        <span class="lang-chip">বাংলা · Bengali</span>
+        <span class="lang-chip">मराठी · Marathi</span>
+        <span class="lang-chip">ಕನ್ನಡ · Kannada</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Privacy / Safety ═══ -->
+<section id="privacy">
+  <div class="container">
+    <h2>Your health. Your data. Your control.</h2>
+    <p class="lead">We take privacy and safety as seriously as you take your health.</p>
+    <div class="safety">
+      <div class="item">
+        <div class="big-icon">🔐</div>
+        <h3>Encrypted in transit &amp; at rest</h3>
+        <p>All data is encrypted using Firebase infrastructure. Photos stay private to you.</p>
+      </div>
+      <div class="item">
+        <div class="big-icon">🚫</div>
+        <h3>Never sold, never shared</h3>
+        <p>Your health data is not shared with advertisers, insurers, or third parties.</p>
+      </div>
+      <div class="item">
+        <div class="big-icon">🗑️</div>
+        <h3>Delete anytime</h3>
+        <p>One tap from Settings removes your account and every piece of data from our servers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section id="faq" class="alt">
+  <div class="container" style="max-width: 780px;">
+    <h2>Frequently asked</h2>
+    <p class="lead">Short answers to common questions. Still curious? Email us.</p>
+    <div class="faq">
+      <details>
+        <summary>Is MamaSphere a medical device?</summary>
+        <p>No. MamaSphere is a wellness tool. It helps you track, learn, and connect, but it does not diagnose or treat medical conditions. Always consult your healthcare provider for medical decisions.</p>
+      </details>
+      <details>
+        <summary>How does the AI work?</summary>
+        <p>We use Google Gemini AI for chat responses, report analysis, and insights. Every health recommendation in the AI chat includes citations to authoritative sources (ACOG, WHO, AAP, NHS UK, Mayo Clinic). Your data is not used to train AI models.</p>
+      </details>
+      <details>
+        <summary>Is it free?</summary>
+        <p>Yes, MamaSphere is free to download and use. Premium and Premium+ subscriptions unlock unlimited AI chats, more monthly report scans, ad-free experience, and additional Future Baby generations.</p>
+      </details>
+      <details>
+        <summary>Do I need internet?</summary>
+        <p>An internet connection is needed for AI features, community, and report scanning. Basic tracking (vitals, feeding, diapers, weight) works offline and syncs when you're back online.</p>
+      </details>
+      <details>
+        <summary>Does it support premature babies?</summary>
+        <p>Yes. Growth charts use corrected age automatically. There's a dedicated NICU support dashboard with phototherapy tracking, bilirubin monitoring, and NICU-specific community groups.</p>
+      </details>
+      <details>
+        <summary>How do I contact support?</summary>
+        <p>Email us at <a href="mailto:findaneasyway@gmail.com" style="color: var(--purple); font-weight: 600;">findaneasyway@gmail.com</a> — we reply within 24 hours. You can also visit the <a href="support.html" style="color: var(--purple); font-weight: 600;">Support page</a>.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Final CTA ═══ -->
+<section id="download" style="padding: 0 24px;">
+  <div class="final-cta">
+    <h2>Your journey starts here</h2>
+    <p>Download MamaSphere and give yourself the support you deserve.</p>
+    <div class="store-btns">
+      <a class="store-btn ios" href="https://apps.apple.com/us/app/mamasphere-maternal-health/id6761536832">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.05 12.04c-.02-2.32 1.9-3.43 1.98-3.49-1.08-1.58-2.77-1.79-3.36-1.82-1.43-.14-2.8.84-3.52.84-.74 0-1.84-.82-3.03-.8-1.55.02-3 .91-3.81 2.3-1.63 2.83-.42 7.02 1.17 9.32.78 1.12 1.71 2.38 2.92 2.34 1.17-.05 1.62-.76 3.04-.76 1.41 0 1.82.76 3.06.74 1.26-.02 2.06-1.14 2.83-2.27.89-1.3 1.26-2.57 1.28-2.63-.03-.01-2.46-.94-2.48-3.73zM14.73 5.23c.64-.77 1.07-1.85.95-2.92-.92.04-2.04.61-2.71 1.38-.59.68-1.12 1.76-.98 2.82 1.03.08 2.09-.52 2.74-1.28z"/></svg>
+        App Store
+      </a>
+      <a class="store-btn android" href="https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3.609 1.814L13.792 12 3.609 22.186a.996.996 0 0 1-.609-.92V2.734a1 1 0 0 1 .609-.92zm10.89 10.893l2.707 2.707-10.15 5.878 7.443-8.585zm3.693-3.692l2.31 1.338a1 1 0 0 1 0 1.73l-2.31 1.338-3.277-3.27 3.277-3.136zM6.056 1.215l10.15 5.871-2.708 2.708L6.056 1.215z"/></svg>
+        Google Play
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Footer ═══ -->
 <footer>
-  <p>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="support.html">Support</a>
-    <a href="mailto:findaneasyway@gmail.com">Contact</a>
-  </p>
-  <p style="margin-top: 12px;">&copy; 2026 MamaSphere. All rights reserved.</p>
+  <div class="container">
+    <div class="brand-footer">
+      <img src="icon.png" alt="MamaSphere">
+      <strong>MamaSphere</strong>
+    </div>
+    <div>
+      <a href="privacy.html">Privacy Policy</a> ·
+      <a href="terms.html">Terms of Use</a> ·
+      <a href="support.html">Support</a> ·
+      <a href="mailto:findaneasyway@gmail.com">Contact</a>
+    </div>
+    <p class="copyright">&copy; 2026 MamaSphere. All rights reserved.</p>
+  </div>
 </footer>
 
 </body>
