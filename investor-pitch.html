@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MamaSphere — Investor Pitch</title>
+<style>
+  :root {
+    --purple: #4A2272;
+    --purple-light: #7B4FA8;
+    --pink: #F06292;
+    --sage: #00B894;
+    --coral: #F2725C;
+    --navy: #0A2540;
+    --bg: #FAF7FC;
+    --card: #FFFFFF;
+    --text: #1F2937;
+    --muted: #6B7280;
+    --border: #E5E7EB;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #1A1A2E;
+    color: var(--text);
+    overflow: hidden;
+  }
+  .deck { position: relative; width: 100vw; height: 100vh; overflow: hidden; }
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 80px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    background: var(--bg);
+    overflow-y: auto;
+  }
+  .slide.active { opacity: 1; pointer-events: auto; }
+  .slide-num {
+    position: absolute;
+    bottom: 28px;
+    right: 36px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .slide-brand {
+    position: absolute;
+    top: 28px;
+    left: 36px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    color: var(--purple);
+    font-size: 14px;
+  }
+  .slide-brand .dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    background: rgba(0,0,0,0.65);
+    padding: 8px 14px;
+    border-radius: 24px;
+    z-index: 100;
+  }
+  .nav button {
+    background: rgba(255,255,255,0.1);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 16px;
+    padding: 6px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .nav button:hover { background: rgba(255,255,255,0.2); }
+  .nav .counter { color: rgba(255,255,255,0.85); font-size: 13px; padding: 6px 8px; }
+
+  /* Hero / title slide */
+  .hero {
+    background: linear-gradient(160deg, #4A2272 0%, #F06292 100%);
+    color: white;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: 80px;
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    margin-bottom: 18px;
+  }
+  .hero .tagline {
+    font-size: 26px;
+    font-weight: 500;
+    opacity: 0.95;
+    max-width: 720px;
+    margin: 0 auto 36px;
+    line-height: 1.4;
+  }
+  .hero .pill-row {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 50px;
+  }
+  .hero .pill {
+    background: rgba(255,255,255,0.15);
+    padding: 8px 18px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    backdrop-filter: blur(4px);
+  }
+  .hero .meta {
+    font-size: 14px;
+    opacity: 0.85;
+    letter-spacing: 1px;
+  }
+  .hero .slide-brand, .hero .slide-num { color: rgba(255,255,255,0.7); }
+
+  /* Generic content slides */
+  .slide h2 {
+    font-size: 56px;
+    font-weight: 900;
+    color: var(--purple);
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    max-width: 1100px;
+  }
+  .slide h2 em {
+    font-style: normal;
+    background: linear-gradient(90deg, var(--pink), var(--coral));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .slide .lead {
+    font-size: 22px;
+    color: var(--muted);
+    line-height: 1.5;
+    max-width: 900px;
+    margin-bottom: 36px;
+  }
+
+  /* Problem stats grid */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    width: 100%;
+    max-width: 1100px;
+  }
+  .stat {
+    background: white;
+    padding: 32px 28px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  .stat .num {
+    font-size: 56px;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .stat .label {
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.45;
+    font-weight: 500;
+  }
+
+  /* Features 3-col */
+  .features-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    max-width: 1150px;
+  }
+  .feat {
+    background: white;
+    padding: 30px 28px;
+    border-radius: 18px;
+    border: 1px solid var(--border);
+  }
+  .feat .icon {
+    width: 56px; height: 56px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 30px;
+    margin-bottom: 16px;
+  }
+  .feat h3 { color: var(--navy); font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+  .feat p { color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+  /* Languages bar */
+  .lang-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 24px 0 36px;
+    max-width: 1000px;
+  }
+  .lang-chip {
+    background: white;
+    border: 2px solid var(--purple);
+    padding: 10px 18px;
+    border-radius: 22px;
+    font-weight: 700;
+    color: var(--purple);
+    font-size: 16px;
+  }
+
+  /* Market size slide */
+  .market {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+  }
+  .market-rings {
+    display: flex;
+    gap: 28px;
+    align-items: end;
+  }
+  .ring {
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: 800;
+    box-shadow: 0 16px 40px rgba(74,34,114,0.25);
+  }
+  .ring.tam { width: 320px; height: 320px; background: linear-gradient(135deg, #4A2272, #7B4FA8); }
+  .ring.sam { width: 220px; height: 220px; background: linear-gradient(135deg, #F06292, #F8A3BC); }
+  .ring.som { width: 130px; height: 130px; background: linear-gradient(135deg, #00B894, #55E6C1); }
+  .ring .label { font-size: 14px; letter-spacing: 1px; opacity: 0.85; margin-bottom: 4px; }
+  .ring .num { font-size: 32px; font-weight: 900; line-height: 1; }
+  .ring.sam .num { font-size: 26px; }
+  .ring.som .num { font-size: 18px; }
+  .ring.tam .desc, .ring.sam .desc, .ring.som .desc { font-size: 11px; opacity: 0.85; margin-top: 4px; }
+
+  /* Why now */
+  .why-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+  }
+  .why-card {
+    border-left: 6px solid var(--coral);
+    padding: 16px 24px;
+    background: white;
+    border-radius: 12px;
+  }
+  .why-card h3 { font-size: 18px; color: var(--navy); margin-bottom: 6px; font-weight: 800; }
+  .why-card p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+  /* Competition table */
+  .compare {
+    border-collapse: separate;
+    border-spacing: 0;
+    width: 100%;
+    max-width: 950px;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(10,37,64,0.06);
+  }
+  .compare th, .compare td {
+    padding: 18px 22px;
+    text-align: center;
+    font-size: 15px;
+  }
+  .compare th {
+    background: var(--purple);
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .compare th:first-child { text-align: left; }
+  .compare td:first-child { text-align: left; font-weight: 600; color: var(--navy); }
+  .compare tr:nth-child(even) td { background: #FAF7FC; }
+  .compare .yes { color: var(--sage); font-weight: 800; font-size: 22px; }
+  .compare .no { color: #ccc; font-weight: 800; font-size: 22px; }
+  .compare .partial { color: var(--coral); font-weight: 700; font-size: 14px; }
+
+  /* Traction big numbers */
+  .traction {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+    max-width: 1000px;
+    margin-top: 8px;
+  }
+  .traction-card {
+    background: white;
+    padding: 36px;
+    border-radius: 18px;
+    border-top: 6px solid var(--sage);
+  }
+  .traction-card .badge {
+    display: inline-block;
+    background: rgba(0,184,148,0.12);
+    color: var(--sage);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .traction-card h3 { font-size: 30px; color: var(--navy); margin-bottom: 6px; font-weight: 800; }
+  .traction-card p { color: var(--muted); font-size: 15px; line-height: 1.5; }
+
+  /* Business model */
+  .biz {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    max-width: 1100px;
+  }
+  .biz-card {
+    background: white;
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    position: relative;
+  }
+  .biz-card.primary { border: 2px solid var(--purple); }
+  .biz-card.primary::before {
+    content: 'Primary';
+    position: absolute;
+    top: -12px; left: 16px;
+    background: var(--purple);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+  }
+  .biz-card .price {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--purple);
+    margin-bottom: 6px;
+  }
+  .biz-card h3 { color: var(--navy); margin-bottom: 8px; font-size: 18px; }
+  .biz-card p { color: var(--muted); font-size: 14px; line-height: 1.5; }
+
+  /* Use of funds */
+  .funds {
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    max-width: 1150px;
+    width: 100%;
+  }
+  .funds-bar {
+    flex: 1;
+    height: 60px;
+    border-radius: 30px;
+    overflow: hidden;
+    display: flex;
+    box-shadow: 0 8px 20px rgba(74,34,114,0.15);
+  }
+  .funds-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .funds-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    width: 100%;
+    margin-top: 24px;
+  }
+  .funds-item {
+    background: white;
+    padding: 20px 22px;
+    border-radius: 14px;
+    border-left: 5px solid var(--purple);
+  }
+  .funds-item .pct {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--purple);
+    margin-bottom: 4px;
+  }
+  .funds-item h4 { color: var(--navy); font-size: 16px; margin-bottom: 4px; }
+  .funds-item p { color: var(--muted); font-size: 14px; line-height: 1.4; }
+
+  /* Milestones */
+  .milestones {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    max-width: 1100px;
+  }
+  .milestone {
+    background: white;
+    padding: 28px;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    border-bottom: 4px solid var(--coral);
+  }
+  .milestone .when {
+    font-size: 13px;
+    color: var(--coral);
+    font-weight: 800;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .milestone h4 {
+    color: var(--navy);
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    line-height: 1.2;
+  }
+  .milestone ul { list-style: none; padding: 0; }
+  .milestone li {
+    color: var(--muted);
+    font-size: 14px;
+    padding: 6px 0 6px 20px;
+    position: relative;
+    line-height: 1.5;
+  }
+  .milestone li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--sage);
+    font-weight: 800;
+  }
+
+  /* The ask */
+  .ask {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
+    color: white;
+    text-align: center;
+  }
+  .ask h2 { color: white; }
+  .ask .ask-box {
+    background: rgba(255,255,255,0.12);
+    border: 2px solid rgba(255,255,255,0.3);
+    backdrop-filter: blur(4px);
+    border-radius: 24px;
+    padding: 40px 60px;
+    margin-top: 20px;
+  }
+  .ask-amount {
+    font-size: 96px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .ask-detail {
+    font-size: 22px;
+    opacity: 0.95;
+    margin-bottom: 28px;
+  }
+  .ask-purpose {
+    font-size: 18px;
+    opacity: 0.85;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .ask .slide-brand, .ask .slide-num { color: rgba(255,255,255,0.7); }
+
+  /* Vision / closing */
+  .vision {
+    background: var(--navy);
+    color: white;
+    text-align: center;
+  }
+  .vision h2 {
+    color: white;
+    font-size: 64px;
+    line-height: 1.1;
+    max-width: 1100px;
+  }
+  .vision .lead { color: rgba(255,255,255,0.85); }
+  .vision .moat-box {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 32px 40px;
+    border-radius: 18px;
+    max-width: 850px;
+    margin-top: 12px;
+  }
+  .vision .moat-box strong { color: var(--pink); }
+  .vision .slide-brand { color: rgba(255,255,255,0.7); }
+  .vision .slide-num { color: rgba(255,255,255,0.5); }
+
+  /* Screenshots */
+  .screenshots-row {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    max-width: 1200px;
+    margin-top: 36px;
+    height: 520px;
+  }
+  .screenshot-img {
+    height: 100%;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    border: 8px solid #1F2937;
+    object-fit: cover;
+  }
+
+  /* Contact slide */
+  .contact-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-top: 30px;
+  }
+  .contact-block a {
+    background: var(--purple);
+    color: white;
+    padding: 16px 32px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 17px;
+    box-shadow: 0 8px 22px rgba(74,34,114,0.25);
+  }
+  .contact-block .small { color: var(--muted); font-size: 14px; }
+
+  @media (max-width: 900px) {
+    .slide { padding: 40px 28px; }
+    .hero h1 { font-size: 48px; }
+    .hero .tagline { font-size: 18px; }
+    .slide h2 { font-size: 36px; }
+    .slide .lead { font-size: 18px; }
+    .stats, .features-3, .why-row, .biz, .milestones, .traction, .funds-list { grid-template-columns: 1fr; }
+    .market-rings { flex-direction: column; gap: 18px; align-items: center; }
+    .ask-amount { font-size: 60px; }
+    .vision h2 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<!-- 1. HERO -->
+<section class="slide hero active">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h1>India's First<br/>AI Maternal Health<br/>Companion</h1>
+  <p class="tagline">An AI-powered companion through TTC, pregnancy, and postpartum — in 7 Indian languages.</p>
+  <div class="pill-row">
+    <span class="pill">🇮🇳 Built for India</span>
+    <span class="pill">🤖 Gemini AI inside</span>
+    <span class="pill">📱 iOS &amp; Android — Live</span>
+  </div>
+  <div class="meta">SEEKING ANGEL FUNDING · GO-TO-MARKET ROUND</div>
+  <div class="slide-num">01 / 14</div>
+</section>
+
+<!-- 2. PROBLEM -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Indian mothers are <em>underserved</em> by maternal health tech.</h2>
+  <p class="lead">Existing apps are English-only, designed for Western mothers, and miss the realities of Indian pregnancy — language, conditions, and access.</p>
+  <div class="stats">
+    <div class="stat">
+      <div class="num">23M</div>
+      <div class="label">Babies born in India every year — the largest birth cohort on Earth.</div>
+    </div>
+    <div class="stat">
+      <div class="num">3×</div>
+      <div class="label">Higher rates of PCOS, gestational diabetes, and preterm birth vs. the West — Western apps don't address this.</div>
+    </div>
+    <div class="stat">
+      <div class="num">8%</div>
+      <div class="label">Of Indian mothers comfortable in English. The other 92% have <strong>zero</strong> credible maternal health apps in their language.</div>
+    </div>
+  </div>
+  <div class="slide-num">02 / 14</div>
+</section>
+
+<!-- 3. SOLUTION -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>AI maternal health — <em>in your language</em>.</h2>
+  <p class="lead">From conception to first birthday, MamaSphere uses Gemini AI to provide trusted, source-cited health guidance — natively in 7 Indian languages.</p>
+  <div class="features-3">
+    <div class="feat">
+      <div class="icon" style="background: linear-gradient(135deg,#E9D5FF,#C4B5FD)">🤖</div>
+      <h3>AI Health Assistant</h3>
+      <p>Multilingual chat. Every answer cites ACOG, WHO, AAP — not vague internet advice.</p>
+    </div>
+    <div class="feat">
+      <div class="icon" style="background: linear-gradient(135deg,#FCE7F3,#FBCFE8)">📄</div>
+      <h3>Medical Report Scanner</h3>
+      <p>Upload any blood test or scan → plain-language summary, flagged abnormalities, next steps.</p>
+    </div>
+    <div class="feat">
+      <div class="icon" style="background: linear-gradient(135deg,#FEF9C3,#FDE047)">☀️</div>
+      <h3>Jaundice Screener</h3>
+      <p>Photo-based newborn jaundice detection — first such tool optimized for Indian skin tones.</p>
+    </div>
+    <div class="feat">
+      <div class="icon" style="background: linear-gradient(135deg,#D1FAE5,#A7F3D0)">📈</div>
+      <h3>Complete Tracking</h3>
+      <p>Vitals, mood, feeding, growth charts (WHO + corrected age for preemies), vaccination schedule.</p>
+    </div>
+    <div class="feat">
+      <div class="icon" style="background: linear-gradient(135deg,#DBEAFE,#BFDBFE)">👩‍👩‍👧</div>
+      <h3>Matched Community</h3>
+      <p>AI-matched groups by journey + condition. Anonymous, moderated, condition-specific.</p>
+    </div>
+    <div class="feat">
+      <div class="icon" style="background: linear-gradient(135deg,#F5D0FE,#E9D5FF)">🌐</div>
+      <h3>7 Indian Languages</h3>
+      <p>English, Hindi, Tamil, Telugu, Bengali, Marathi, Kannada — fully localized.</p>
+    </div>
+  </div>
+  <div class="slide-num">03 / 15</div>
+</section>
+
+<!-- 4. PRODUCT -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Beautiful. Native. <em>Intuitive.</em></h2>
+  <p class="lead">A premium, carefully crafted experience that feels right at home on iOS and Android.</p>
+  <div class="screenshots-row" style="gap: 20px; height: 480px;">
+    <img src="Simulator Screenshots/01.png" class="screenshot-img" alt="Dashboard">
+    <img src="Simulator Screenshots/02.png" class="screenshot-img" alt="AI Insights">
+    <img src="Simulator Screenshots/03.png" class="screenshot-img" alt="Medical Scanner">
+    <img src="Simulator Screenshots/04.png" class="screenshot-img" alt="TTC Journey">
+    <img src="Simulator Screenshots/05.png" class="screenshot-img" alt="Community">
+  </div>
+  <div class="slide-num">04 / 15</div>
+</section>
+
+<!-- 4b. MORE FEATURES -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Comprehensive. <em>Empowering.</em></h2>
+  <p class="lead">Everything an expecting mother needs, seamlessly integrated.</p>
+  <div class="screenshots-row" style="gap: 20px; height: 480px;">
+    <img src="Simulator Screenshots/06.png" class="screenshot-img" alt="Feature 6">
+    <img src="Simulator Screenshots/07.png" class="screenshot-img" alt="Feature 7">
+    <img src="Simulator Screenshots/08.png" class="screenshot-img" alt="Feature 8">
+    <img src="Simulator Screenshots/09.png" class="screenshot-img" alt="Feature 9">
+    <img src="Simulator Screenshots/10.png" class="screenshot-img" alt="Feature 10">
+  </div>
+  <div class="slide-num">05 / 16</div>
+</section>
+
+<!-- 5. LANGUAGES (the moat) -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Speaks the language of <em>92% of Indian mothers</em>.</h2>
+  <p class="lead">Most maternal apps in India are English-only. We've localized the entire experience — UI, AI responses, articles, communities — in 7 native scripts.</p>
+  <div class="lang-row">
+    <span class="lang-chip">English</span>
+    <span class="lang-chip">हिंदी · Hindi</span>
+    <span class="lang-chip">தமிழ் · Tamil</span>
+    <span class="lang-chip">తెలుగు · Telugu</span>
+    <span class="lang-chip">বাংলা · Bengali</span>
+    <span class="lang-chip">मराठी · Marathi</span>
+    <span class="lang-chip">ಕನ್ನಡ · Kannada</span>
+  </div>
+  <p class="lead" style="font-size:18px; max-width:850px;">
+    <strong>Combined addressable speakers:</strong> ~1.1 billion people. <strong>Combined Indian mom user base:</strong> ~80 million across these 7 languages.
+  </p>
+  <div class="slide-num">04 / 14</div>
+</section>
+
+<!-- 5. WHY NOW -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Why now.</h2>
+  <p class="lead">Three forces are converging — for the first time it's possible to ship credible AI maternal health to India at scale.</p>
+  <div class="why-row">
+    <div class="why-card">
+      <h3>📱 Smartphone saturation</h3>
+      <p>700M+ Indian smartphone users. Tier 2/3 cities online with sub-₹15K Android phones. App distribution is solved.</p>
+    </div>
+    <div class="why-card">
+      <h3>🤖 Indian-language AI is finally good</h3>
+      <p>Gemini 2.5 Flash speaks fluent Hindi/Tamil/Telugu. Multilingual medical-grade AI was impossible 18 months ago.</p>
+    </div>
+    <div class="why-card">
+      <h3>💊 Post-COVID telehealth shift</h3>
+      <p>Gynaecologists actively recommend health apps. Insurance covers digital wellness. Mom-tech category is no longer niche.</p>
+    </div>
+  </div>
+  <div class="slide-num">05 / 14</div>
+</section>
+
+<!-- 6. MARKET -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>A massive, untapped market.</h2>
+  <p class="lead">Indian maternal-tech is forecast to grow from $300M today to $1.8B by 2030 — outpacing global maternal-tech growth.</p>
+  <div class="market">
+    <div class="market-rings">
+      <div class="ring tam">
+        <div class="label">TAM</div>
+        <div class="num">$1.8B</div>
+        <div class="desc">India maternal-tech 2030</div>
+      </div>
+      <div class="ring sam">
+        <div class="label">SAM</div>
+        <div class="num">$420M</div>
+        <div class="desc">Multilingual digital moms</div>
+      </div>
+      <div class="ring som">
+        <div class="label">SOM</div>
+        <div class="num">$25M</div>
+        <div class="desc">3-yr capture</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-num">06 / 14</div>
+</section>
+
+<!-- 7. COMPETITION -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>How we compare.</h2>
+  <p class="lead">Indian competitors lack AI depth. Global apps lack Indian language and clinical context. Nobody has both.</p>
+  <table class="compare">
+    <thead>
+      <tr>
+        <th></th>
+        <th>MamaSphere</th>
+        <th>Mylo</th>
+        <th>Flo / Ovia</th>
+        <th>What to Expect</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>7 Indian languages</td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="partial">3</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="no">✗</span></td>
+      </tr>
+      <tr>
+        <td>AI chat with citations</td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="partial">Basic</span></td>
+        <td><span class="no">✗</span></td>
+      </tr>
+      <tr>
+        <td>Medical report scanner</td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="no">✗</span></td>
+      </tr>
+      <tr>
+        <td>Jaundice screening (camera)</td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="no">✗</span></td>
+      </tr>
+      <tr>
+        <td>WHO growth + corrected-age</td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="partial">Partial</span></td>
+        <td><span class="no">✗</span></td>
+      </tr>
+      <tr>
+        <td>India-specific conditions</td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="yes">✓</span></td>
+        <td><span class="no">✗</span></td>
+        <td><span class="no">✗</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="slide-num">07 / 14</div>
+</section>
+
+<!-- 8. TRACTION -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Where we are today.</h2>
+  <p class="lead">Built, shipped, and accumulating organic users across both stores — without a marketing rupee yet.</p>
+  <div class="traction">
+    <div class="traction-card">
+      <div class="badge">PRODUCT</div>
+      <h3>Live on App Store + Play Store</h3>
+      <p>Both platforms approved. Apple App Store ID: 6761536832. Available in 7 languages with full feature parity.</p>
+    </div>
+    <div class="traction-card">
+      <div class="badge">ENGINEERING</div>
+      <h3>Production-grade infrastructure</h3>
+      <p>Firebase scale (auth, Firestore, Storage, Functions). 25+ Cloud Functions. Sub-2-second AI response time. End-to-end encrypted.</p>
+    </div>
+    <div class="traction-card">
+      <div class="badge">FOUNDATIONS</div>
+      <h3>Premium tier validated</h3>
+      <p>In-app purchases live on iOS &amp; Android. Premium (₹99/mo) and Premium+ (₹199/mo) tiers. Affiliate revenue stream tested.</p>
+    </div>
+    <div class="traction-card">
+      <div class="badge">CLINICAL</div>
+      <h3>All Apple safety reviews passed</h3>
+      <p>Cleared 5.1.1 (data privacy), 1.4.1 (medical citations), 3.1.2 (subscriptions). Privacy policy, ToU, EULA in place.</p>
+    </div>
+  </div>
+  <div class="slide-num">08 / 14</div>
+</section>
+
+<!-- 9. BUSINESS MODEL -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Three revenue streams.</h2>
+  <p class="lead">Subscription is the primary engine. Affiliate is a growing kicker. B2B is the long-term moat.</p>
+  <div class="biz">
+    <div class="biz-card primary">
+      <div class="price">₹99–₹199<span style="font-size:14px; font-weight:500; color: var(--muted);">/mo</span></div>
+      <h3>Premium subscriptions</h3>
+      <p>Unlimited AI chat, more report scans, ad-free, AI baby photos. Industry-standard maternal-app monetization.</p>
+    </div>
+    <div class="biz-card">
+      <div class="price">5–8%</div>
+      <h3>Affiliate commissions</h3>
+      <p>Curated product recommendations (Amazon affiliate). Average ₹120 commission per converted click. Click data already tracked.</p>
+    </div>
+    <div class="biz-card">
+      <div class="price">B2B</div>
+      <h3>Hospitals + Insurance</h3>
+      <p>Year-2 push: bundled with Apollo Cradle, Cloudnine, Star Health, HDFC Ergo maternity policies. Enterprise pricing.</p>
+    </div>
+  </div>
+  <div class="slide-num">09 / 14</div>
+</section>
+
+<!-- 10. THE ASK -->
+<section class="slide ask">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>The ask.</h2>
+  <div class="ask-box">
+    <div class="ask-amount">₹50 Lakh</div>
+    <div class="ask-detail">~$60K — angel round, all-equity, marketing-focused</div>
+    <div class="ask-purpose">Product is built and shipped. We're not raising for engineering. We're raising for the one thing we can't bootstrap: <strong>distribution to Indian mothers.</strong></div>
+  </div>
+  <div class="slide-num">10 / 14</div>
+</section>
+
+<!-- 11. USE OF FUNDS -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Use of funds.</h2>
+  <p class="lead">100% deployed against user acquisition over 12 months. Full optimization on CAC vs LTV.</p>
+  <div class="funds">
+    <div class="funds-bar">
+      <div class="funds-seg" style="background: var(--purple); width: 50%;">50%</div>
+      <div class="funds-seg" style="background: var(--pink); width: 25%;">25%</div>
+      <div class="funds-seg" style="background: var(--coral); width: 15%;">15%</div>
+      <div class="funds-seg" style="background: var(--sage); width: 10%;">10%</div>
+    </div>
+  </div>
+  <div class="funds-list">
+    <div class="funds-item">
+      <div class="pct">50% · ₹25L</div>
+      <h4>Performance marketing</h4>
+      <p>Meta Ads + Google UAC + Apple Search Ads. Targeted at women 22–38 in Tier 1/2 Indian cities. CAC target: ₹40–₹80.</p>
+    </div>
+    <div class="funds-item">
+      <div class="pct">25% · ₹12.5L</div>
+      <h4>Influencer partnerships</h4>
+      <p>50–80 micro-creators (10K–100K followers) across 7 languages. Native authentic Reels showing real features.</p>
+    </div>
+    <div class="funds-item">
+      <div class="pct">15% · ₹7.5L</div>
+      <h4>Doctor &amp; hospital partnerships</h4>
+      <p>50 OB/Pediatric clinics. Co-branded QR codes, free Premium codes for clinic patients, demo events.</p>
+    </div>
+    <div class="funds-item">
+      <div class="pct">10% · ₹5L</div>
+      <h4>PR + ASO + content</h4>
+      <p>Press launches (Inc42, YourStory, Mint), App Store Optimization tools, content/SEO blog production.</p>
+    </div>
+  </div>
+  <div class="slide-num">11 / 14</div>
+</section>
+
+<!-- 12. MILESTONES -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>What ₹50L unlocks.</h2>
+  <p class="lead">Each milestone is a value-inflection point — unlocking the next funding round at substantially higher terms.</p>
+  <div class="milestones">
+    <div class="milestone">
+      <div class="when">MONTH 0–4</div>
+      <h4>Validate</h4>
+      <ul>
+        <li>10K downloads</li>
+        <li>2K monthly active users</li>
+        <li>Validated CAC &lt;₹100</li>
+        <li>D7 retention &gt;20%</li>
+      </ul>
+    </div>
+    <div class="milestone">
+      <div class="when">MONTH 5–8</div>
+      <h4>Scale</h4>
+      <ul>
+        <li>50K downloads</li>
+        <li>10K MAU</li>
+        <li>300 paid subscribers</li>
+        <li>3 hospital partnerships</li>
+      </ul>
+    </div>
+    <div class="milestone">
+      <div class="when">MONTH 9–12</div>
+      <h4>Series-Seed ready</h4>
+      <ul>
+        <li>150K downloads</li>
+        <li>25K MAU · 1K paid</li>
+        <li>₹2.5L MRR</li>
+        <li>Insurance pilot discussions</li>
+      </ul>
+    </div>
+  </div>
+  <div class="slide-num">12 / 14</div>
+</section>
+
+<!-- 13. VISION -->
+<section class="slide vision">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>The bigger vision.</h2>
+  <p class="lead">Every photo, every report, every logged symptom builds a dataset no one else has — Indian skin tones, Indian pregnancy patterns, Indian baby development.</p>
+  <div class="moat-box">
+    <p style="font-size:18px; line-height:1.6;">
+      <strong>In 24 months</strong>, MamaSphere will have the world's largest labeled dataset of Indian maternal health patterns. We'll train custom on-device models that <strong>outperform Western medical AI</strong> on Indian women — a moat no global competitor can replicate.
+    </p>
+  </div>
+  <p class="lead" style="margin-top: 30px; font-size: 18px;">
+    Maternal health → Baby health → Child health. <strong>10-year journey, with each user.</strong>
+  </p>
+  <div class="slide-num">13 / 14</div>
+</section>
+
+<!-- 14. CONTACT -->
+<section class="slide">
+  <div class="slide-brand"><span class="dot"></span> MamaSphere</div>
+  <h2>Let's build this.</h2>
+  <p class="lead">India's mothers deserve health tech as good as anywhere else. We're building it. We'd love your help getting it to them.</p>
+  <div class="contact-block">
+    <a href="mailto:findaneasyway@gmail.com">📧 findaneasyway@gmail.com</a>
+    <div style="display:flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-top: 8px;">
+      <a href="https://daman2448.github.io/mamasphere/" style="background: var(--sage);">🌐 mamasphere.github.io</a>
+      <a href="https://apps.apple.com/us/app/mamasphere-maternal-health/id6761536832" style="background: black;">🍎 App Store</a>
+      <a href="https://play.google.com/store/apps/details?id=com.empoweredcare.mamasphere" style="background: var(--coral);">🤖 Play Store</a>
+    </div>
+    <p class="small" style="margin-top: 18px;">Damanpreet Singh · Founder &amp; CEO</p>
+  </div>
+  <div class="slide-num">14 / 14</div>
+</section>
+
+</div>
+
+<!-- Nav controls -->
+<div class="nav">
+  <button id="prev">←  Prev</button>
+  <span class="counter" id="counter">1 / 14</span>
+  <button id="next">Next  →</button>
+</div>
+
+<script>
+  const slides = document.querySelectorAll('.slide');
+  const counter = document.getElementById('counter');
+  let idx = 0;
+
+  // Auto-number slides
+  slides.forEach((s, j) => {
+    const numEl = s.querySelector('.slide-num');
+    if (numEl) numEl.textContent = String(j + 1).padStart(2, '0') + ' / ' + slides.length;
+  });
+  if (counter) counter.textContent = `1 / ${slides.length}`;
+
+  function show(i) {
+    idx = Math.max(0, Math.min(slides.length - 1, i));
+    slides.forEach((s, j) => s.classList.toggle('active', j === idx));
+    counter.textContent = `${idx + 1} / ${slides.length}`;
+  }
+
+  document.getElementById('next').addEventListener('click', () => show(idx + 1));
+  document.getElementById('prev').addEventListener('click', () => show(idx - 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') show(idx + 1);
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') show(idx - 1);
+    if (e.key === 'Home') show(0);
+    if (e.key === 'End') show(slides.length - 1);
+  });
+
+  // Click on slide to advance (except on links)
+  slides.forEach(s => s.addEventListener('click', (e) => {
+    if (e.target.closest('a, button')) return;
+    show(idx + 1);
+  }));
+</script>
+
+</body>
+</html>
